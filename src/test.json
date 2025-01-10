@@ -1,0 +1,108 @@
+{
+  "results": [
+    {
+      "fsq_id": "baa989652e1c45aec045273b",
+      "categories": [
+        {
+          "id": 13035,
+          "name": "Coffee Shop",
+          "short_name": "Coffee Shop",
+          "plural_name": "Coffee Shops",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+            "suffix": ".png"
+          }
+        }
+      ],
+      "chains": [
+        {
+          "id": "2fc8d230-9c63-0132-6632-3c15c2dde6c8",
+          "name": "Costa Coffee"
+        }
+      ],
+      "closed_bucket": "VeryLikelyOpen",
+      "distance": 11,
+      "geocodes": {
+        "drop_off": {
+          "latitude": 51.425085,
+          "longitude": -0.130767
+        },
+        "main": {
+          "latitude": 51.424894,
+          "longitude": -0.131232
+        },
+        "roof": {
+          "latitude": 51.424894,
+          "longitude": -0.131232
+        }
+      },
+      "link": "/v3/places/baa989652e1c45aec045273b",
+      "location": {
+        "address": "384 Streatham High Rd",
+        "admin_region": "England",
+        "country": "GB",
+        "formatted_address": "384 Streatham High Rd, London, Greater London",
+        "locality": "London",
+        "post_town": "London",
+        "region": "Greater London"
+      },
+      "name": "Costa Express",
+      "related_places": {},
+      "timezone": "Europe/London"
+    },
+    {
+      "fsq_id": "528a47af11d23a6e65967bc9",
+      "categories": [
+        {
+          "id": 17069,
+          "name": "Grocery Store",
+          "short_name": "Grocery Store",
+          "plural_name": "Grocery Stores",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/shops/food_grocery_",
+            "suffix": ".png"
+          }
+        }
+      ],
+      "chains": [],
+      "closed_bucket": "LikelyOpen",
+      "distance": 20,
+      "geocodes": {
+        "main": {
+          "latitude": 51.424842,
+          "longitude": -0.131172
+        },
+        "roof": {
+          "latitude": 51.424842,
+          "longitude": -0.131172
+        }
+      },
+      "link": "/v3/places/528a47af11d23a6e65967bc9",
+      "location": {
+        "address": "384 Streatham High Rd",
+        "admin_region": "England",
+        "country": "GB",
+        "cross_street": "",
+        "formatted_address": "384 Streatham High Rd, London, Greater London, SW16 6HP",
+        "locality": "London",
+        "post_town": "London",
+        "postcode": "SW16 6HP",
+        "region": "Greater London"
+      },
+      "name": "Tesco Mobile",
+      "related_places": {},
+      "timezone": "Europe/London"
+    }
+  ],
+  "context": {
+    "geo_bounds": {
+      "circle": {
+        "center": {
+          "latitude": 51.4249922,
+          "longitude": -0.1313381
+        },
+        "radius": 100
+      }
+    }
+  }
+}
