@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react'
 import axios from 'axios';
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 function App() {
   function buttonClick() {
@@ -15,14 +16,17 @@ function App() {
   }
 
   async function searchPlaces(latitude, longitude) {
-    const endpoint = `https://api.foursquare.com/v3/places/search`;
+    const options = {
+      method: 'GET',
+      url: `${process.env.REACT_APP_FOUR_SQUARE_ENDPOINT}?ll=${latitude}%2C${longitude}&radius=100`,
+      headers: {
+        Accept: 'application/json',
+        authorization: process.env.REACT_APP_FOUR_SQUARE_TOKEN
+      }
+    };
 
-    const response = await fetch(
-      `${endpoint}?ll=${latitude}%2C${longitude}&radius=100`
-    )
-
-    const data = await response.json();
-    console.log("Nearby Places:", data);
+    const { data } = await axios.request(options);
+    return data;
   }
 
   return (
