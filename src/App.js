@@ -1,12 +1,19 @@
-import './App.css';
 import React from 'react'
 import axios from 'axios';
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import girl from './images/girl.png'
 
 function App() {
+  const [coordinates, setCoordinates] = React.useState({});
+  const [localData, setLocalData] = React.useState({})
+
   function buttonClick() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        setCoordinates({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        })
         searchPlaces(position.coords.latitude, position.coords.longitude)
       },
       (error) => {
@@ -26,13 +33,35 @@ function App() {
     };
 
     const { data } = await axios.request(options);
-    return data;
+    setLocalData(data);
+    console.log(data)
   }
 
   return (
-    <div className="App">
-      <div onClick={buttonClick}>hello</div>
-    </div>
+      <div className="text-center font-mono">
+        <h1 className="text-4xl my-6">Go-Lingo</h1>
+        <img src={girl} width="100px" className="absolute left-[calc(50%-50px)] top-[250px] z-50"/>
+        <div className='h-[400px] my-2'>
+          {coordinates.lat && coordinates.lng && 
+            <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_TOKEN}>
+              <GoogleMap
+                mapContainerStyle={{
+                  width: '50%',
+                  height: '400px',
+                  margin: 'auto',
+                  borderRadius: '5px',
+                  border: '1px solid black'
+                }}
+                center={coordinates}
+                zoom={20}
+                tilt={90}
+              >
+              </GoogleMap>
+            </LoadScript>
+          }
+        </div>
+        <div onClick={buttonClick} className='my-2 border border-black rounded-lg inline-block p-4 text-2xl shadow-[5px_5px_5px_0_rgba(0,0,0,0.7)] hover:shadow-[0_0_0_0_rgba(0,0,0,0.7)] hover:transform hover:translate-x-1 hover:translate-y-1 transition ease-in-out bg-teal-300'>Locate</div>
+      </div>
   );
 }
 
