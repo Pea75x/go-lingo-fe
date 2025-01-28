@@ -1,16 +1,21 @@
 import React from 'react'
 import axios from 'axios'
 import { GoogleMap, LoadScript } from "@react-google-maps/api"
-import explorer from './images/explorer.png'
 import Button from './Button'
 import { useNavigate } from 'react-router-dom';
+import alien from './images/alien.png'
+import alienBackground from './images/alien-background.png'
+import explorer from './images/explorer.png'
+import explorerBackground from './images/explorer-background.png'
 
 function Map() {
   const [coordinates, setCoordinates] = React.useState({});
   const [localLocations, setLocalLocations] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false)
   const navigate = useNavigate();
 
   function locateUser() {
+    setIsLoading(true)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setCoordinates({
@@ -22,6 +27,7 @@ function Map() {
       },
       (error) => {
         console.error("error getting location: ", error.message)
+        setIsLoading(false)
       }
     )
   }
@@ -38,46 +44,58 @@ function Map() {
 
     const { data } = await axios.request(options);
     setLocalLocations(data.locations);
+    setIsLoading(false)
   }
 
   return (
-      <div className="text-center font-mono">
-        <h1 className="text-4xl my-6">Go-Lingo</h1>
-        <img src={explorer} width="100px" className="absolute left-[calc(50%-50px)] top-[250px] z-50"/>
+    <div className="pt-5 text-center font-mono">
+      <div className='relative'>
+        <img src={explorer} width="130px" className="absolute left-[calc(50%-65px)] top-[100px] z-50"/>
         <div className='h-[400px] my-2'>
-          {coordinates.lat && coordinates.lng && 
-            <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_TOKEN}>
+          {coordinates.lat && coordinates.lng ? 
+            (<LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_TOKEN}>
               <GoogleMap
                 mapContainerStyle={{
-                  width: '50%',
+                  width: '400px',
                   height: '400px',
                   margin: 'auto',
-                  borderRadius: '5px',
-                  border: '1px solid black'
+                  borderRadius: '200px',
+                  zoomControl: false,
+                  mapTypeControl: false,
+                  streetViewControl: false,
+                  fullscreenControl: false, 
                 }}
                 center={coordinates}
-                zoom={20}
+                zoom={17}
                 tilt={90}
               >
               </GoogleMap>
-            </LoadScript>
+            </LoadScript>) : (
+              <div style={{backgroundImage: "url(" + explorerBackground + ")"}} className={`h-[400px] w-[400px] m-auto bg-cover z-20 absolute relative top-0 ${isLoading && "spin-slow"}`}></div>
+            )
           }
         </div>
-        {
-          localLocations.length > 0 ? (
-            <div>
-              <p>Click on the location you would like phrases for</p>
+      </div>
+      {
+        localLocations.length > 0 ? (
+          <div>
+            <p className='text-lg'>Which nearby location would you like phrases for?</p>
+            <div className='flex w-[500px] mx-auto'>
               {
                 localLocations.map((location) => (
-                  <Button key={location} onClick={() => navigate(`/phrases`, {state: { location: location }} )} text={location}/>
+                  <Button key={location} onClick={() => navigate(`/phrases`, {state: { location: location }} )} text={location} classes='w-full'/>
                 ))
               }
             </div>
-          ) : (
-            <Button onClick={locateUser} text="locate"/>
-          )
-        }
-      </div>
+          </div>
+        ) : (
+          <div className="w-[500px] m-auto flex justify-between">
+            <Button onClick={locateUser} text="Locate" classes="w-[150px]"/>
+            <Button onClick={locateUser} text="Previous locations" classes="w-[300px]"/>
+          </div>
+        )
+      }
+    </div>
   );
 }
 
