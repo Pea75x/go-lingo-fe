@@ -83,7 +83,7 @@ function Map() {
       {
         localLocations && localLocations.length > 0 ? (
           <div>
-            <p className='text-lg'>Which nearby location would you like phrases for?</p>
+            <p className='md:text-lg text-m'>Which nearby location would you like phrases for?</p>
             <div className='flex w-[500px] mx-auto'>
               {
                 localLocations.map((location) => (

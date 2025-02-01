@@ -9,7 +9,7 @@ export const login = async (userDetails) => {
 };
 
 export const register = async (userData) => {
-  const { data } = await api.get(`/register/`, userData);
+  const { data } = await api.post(`/register/`, userData);
   return data
 };
 
