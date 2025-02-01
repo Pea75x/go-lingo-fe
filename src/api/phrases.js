@@ -1,14 +1,11 @@
-import axios from 'axios';
+import api from "./api";
 
 export const searchPhrases = async (location) => {
-  const options = {
-    method: 'GET',
-    url: `${process.env.REACT_APP_API_ENDPOINT}/location-phrases/${encodeURIComponent(location)}`,
-    headers: {
-      Accept: 'application/json'
-      // authorization: `Bearer ${token}`
-    }
-  };
-  const { data } = await axios.request(options);
+  const { data } = await api.get(`/location-phrases/${encodeURIComponent(location)}`);
   return data;
 };
+
+export const searchLocation= async (latitude, longitude) => {
+  const { data } = await api.get(`/get_locations_by_coordinates?lat=${latitude}&long=${longitude}`);
+  return data;
+}

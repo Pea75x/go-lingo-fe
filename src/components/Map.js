@@ -1,20 +1,22 @@
 import React from 'react'
-import axios from 'axios'
 import { GoogleMap, LoadScript } from "@react-google-maps/api"
 import Button from './Button'
 import { useNavigate } from 'react-router-dom';
-import alien from './images/alien.png'
-import alienBackground from './images/alien-background.png'
-import explorer from './images/explorer.png'
-import explorerBackground from './images/explorer-background.png'
+import alien from '../images/alien.png'
+import alienBackground from '../images/alien-background.png'
+import explorer from '../images/explorer.png'
+import explorerBackground from '../images/explorer-background.png'
+import { searchLocation } from '../api/phrases'
 
 function Map() {
   const [coordinates, setCoordinates] = React.useState({});
   const [localLocations, setLocalLocations] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState("")
   const navigate = useNavigate();
 
   function locateUser() {
+    setErrorMessage("")
     setIsLoading(true)
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -33,23 +35,25 @@ function Map() {
   }
 
   async function getLocations(latitude, longitude) {
-    const options = {
-      method: 'GET',
-      url: `${process.env.REACT_APP_API_ENDPOINT}/get_locations_by_coordinates?lat=${latitude}&long=${longitude}`,
-      headers: {
-        Accept: 'application/json'
-      //   authorization: process.env.REACT_APP_API_ENDPOINT
-      }
-    };
+    try {
+      const data = await searchLocation(latitude, longitude)
+      setLocalLocations(data.locations);
 
-    const { data } = await axios.request(options);
-    setLocalLocations(data.locations);
-    setIsLoading(false)
+      if(data.locations.length < 1) {
+        setErrorMessage("Cannot find nearby locations")
+      }
+      console.log("search locations data:", data)
+    } catch(error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className="pt-5 text-center font-mono">
       <div className='relative'>
+        {!!errorMessage && <div className="absolute z-[100] top-[290px] left-1/2 transform -translate-x-1/2 text-red-600 font-bold text-xl w-[400px] bg-red-100 rounded-full border-2 border-red-600">{errorMessage}</div>}
         <img src={explorer} width="130px" className="absolute left-[calc(50%-65px)] top-[100px] z-50"/>
         <div className='h-[400px] my-2'>
           {coordinates.lat && coordinates.lng ? 
@@ -77,7 +81,7 @@ function Map() {
         </div>
       </div>
       {
-        localLocations.length > 0 ? (
+        localLocations && localLocations.length > 0 ? (
           <div>
             <p className='text-lg'>Which nearby location would you like phrases for?</p>
             <div className='flex w-[500px] mx-auto'>
@@ -89,9 +93,11 @@ function Map() {
             </div>
           </div>
         ) : (
-          <div className="w-[500px] m-auto flex justify-between">
-            <Button onClick={locateUser} text="Locate" classes="w-[150px]"/>
-            <Button onClick={locateUser} text="Previous locations" classes="w-[300px]"/>
+          <div className='relative'>
+            <div className="w-[500px] m-auto flex justify-between">
+              <Button onClick={locateUser} text="Locate" classes="w-[150px]"/>
+              <Button onClick={locateUser} text="Previous locations" classes="w-[300px]"/>
+            </div>
           </div>
         )
       }
