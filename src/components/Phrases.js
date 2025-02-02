@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
-import { searchPhrases } from './api/phrases'
+import { searchPhrases } from '../api/phrases'
 
 function Phrases() {
   const [phrases, setPhrases] = React.useState({})
