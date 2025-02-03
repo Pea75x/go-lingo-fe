@@ -84,7 +84,7 @@ function Map() {
         localLocations && localLocations.length > 0 ? (
           <div>
             <p className='md:text-lg text-m'>Which nearby location would you like phrases for?</p>
-            <div className='flex w-[500px] mx-auto'>
+            <div className={`grid grid-cols-${localLocations.length} gap-2 w-[500px] mx-auto`}>
               {
                 localLocations.map((location) => (
                   <Button key={location} onClick={() => navigate(`/phrases`, {state: { location: location }} )} text={location} classes='w-full'/>
