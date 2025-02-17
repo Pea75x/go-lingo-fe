@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function Register() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = React.useState('');
-
+  
   const [user, setUser] = React.useState({
     username: '',
     email: '',
@@ -25,6 +25,7 @@ function Register() {
         navigate(`/login`);
       } catch (error) {
         if (error.request) {
+          console.log(error)
           setErrorMessage(error.request.statusText);
         } else {
           setErrorMessage('Error');

@@ -13,3 +13,7 @@ export const register = async (userData) => {
   return data
 };
 
+export const getUser = async () => {
+  const { data } = await api.get(`/user/`)
+  return data
+}

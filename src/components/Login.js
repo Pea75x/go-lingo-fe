@@ -77,7 +77,7 @@ function Login() {
         </form>
         <p className='mt-5'>
           Dont have an account?
-          <a className='ml-2 font-bold' href='/signup'>
+          <a className='ml-2 font-bold' href='/register'>
             Register
           </a>
         </p>
